@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검 강화하기 게임</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 상단 유저 정보 박스 -->
+        <div class="top-bar">
+            <div class="player-info">
+                <span class="player-name" id="playerName">플레이어</span>
+            </div>
+            <div class="resources">
+                <div class="resource gold">
+                    <span class="icon">G</span>
+                    <span class="amount" id="goldAmount">50000</span>
+                </div>
+                <div class="resource money">
+                    <span class="icon">M</span>
+                    <span class="amount" id="moneyAmount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2x2 그리드 섹션 -->
+        <div class="grid-section">
+            <div class="grid-item" id="dexBtn">
+                <h3>📖 도감</h3>
+                <p>획득한 검 확인</p>
+            </div>
+            <div class="grid-item" id="checkInBtn">
+                <h3>✓ 출석체크</h3>
+                <p>일일 보상 10,000G</p>
+            </div>
+            <div class="grid-item" id="rankingBtn">
+                <h3>🏆 랭킹</h3>
+                <p>플레이어 순위</p>
+            </div>
+            <div class="grid-item" id="gmBtn">
+                <h3>⚙️ GM</h3>
+                <p>관리자 도구</p>
+            </div>
+        </div>
+
+        <!-- 탭 섹션 -->
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="enhance">🗡️ 강화</button>
+                <button class="tab-btn" data-tab="roulette">🎡 룰렛</button>
+                <button class="tab-btn" data-tab="shop">🛍️ 상점</button>
+            </div>
+
+            <!-- 강화 탭 -->
+            <div class="tab-content active" id="enhanceTab">
+                <div class="enhance-container">
+                    <div class="sword-display">
+                        <div class="sword-image" id="swordImage">🗡️</div>
+                        <div class="sword-info">
+                            <div class="sword-name" id="swordName">낡은 검</div>
+                            <div class="sword-level" id="swordLevel">0강</div>
+                            <div class="sword-attribute" id="swordAttribute"></div>
+                        </div>
+                    </div>
+
+                    <div class="enhance-stats">
+                        <div class="stat-row">
+                            <span>강화 비용:</span>
+                            <span class="stat-value" id="enhanceCost">0 G</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>성공 확률:</span>
+                            <span class="stat-value success" id="successRate">80%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>파괴 확률:</span>
+                            <span class="stat-value danger" id="destroyRate">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>유지 확률:</span>
+                            <span class="stat-value" id="maintainRate">20%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>하락 확률:</span>
+                            <span class="stat-value" id="downgradeRate">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="enhance-items">
+                        <div class="item-box">
+                            <span class="item-name">확정권</span>
+                            <span class="item-count" id="guaranteeCount">0</span>
+                            <input type="checkbox" class="item-toggle" id="useGuarantee">
+                        </div>
+                        <div class="item-box">
+                            <span class="item-name">방지권</span>
+                            <span class="item-count" id="protectCount">0</span>
+                            <input type="checkbox" class="item-toggle" id="useProtect">
+                        </div>
+                    </div>
+
+                    <div class="enhance-actions">
+                        <button class="btn btn-primary" id="enhanceBtn">강화하기</button>
+                        <button class="btn btn-secondary" id="storeBtn">보관하기</button>
+                        <button class="btn btn-danger" id="sellBtn">판매하기</button>
+                    </div>
+
+                    <div class="enhance-log" id="enhanceLog">
+                        <p class="log-empty">강화 기록이 없습니다</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 룰렛 탭 -->
+            <div class="tab-content" id="rouletteTab">
+                <div class="roulette-container">
+                    <div class="roulette-wheel" id="rouletteWheel">
+                        <div class="roulette-segment" style="--angle: 0deg; --color: #ff4444;">🔥</div>
+                        <div class="roulette-segment" style="--angle: 40deg; --color: #4444ff;">💧</div>
+                        <div class="roulette-segment" style="--angle: 80deg; --color: #332244;">🌑</div>
+                        <div class="roulette-segment" style="--angle: 120deg; --color: #44ff44;">☠️</div>
+                        <div class="roulette-segment" style="--angle: 160deg; --color: #44ffff;">❄️</div>
+                        <div class="roulette-segment" style="--angle: 200deg; --color: #ffff44;">✨</div>
+                        <div class="roulette-segment" style="--angle: 240deg; --color: #aa0000;">😈</div>
+                        <div class="roulette-segment" style="--angle: 280deg; --color: #888888;">⚙️</div>
+                        <div class="roulette-segment" style="--angle: 320deg; --color: #228822;">🌿</div>
+                        <div class="roulette-pointer"></div>
+                    </div>
+
+                    <div class="roulette-controls">
+                        <div class="spin-info">
+                            <p>비용: <strong>1 머니/회</strong></p>
+                            <p>보유: <strong id="moneyForRoulette">0</strong> 머니</p>
+                        </div>
+                        <button class="btn btn-primary" id="spinOnceBtn">1회 스핀</button>
+                        <button class="btn btn-primary" id="spinTenBtn">10회 스핀</button>
+                    </div>
+
+                    <div class="roulette-results" id="rouletteResults">
+                        <p class="result-empty">아직 스핀 결과가 없습니다</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 상점 탭 -->
+            <div class="tab-content" id="shopTab">
+                <div class="shop-container">
+                    <div class="shop-section">
+                        <h3>🪙 골드 상품</h3>
+                        <div class="shop-items" id="goldShop">
+                            <!-- 동적으로 생성됨 -->
+                        </div>
+                    </div>
+                    <div class="shop-section">
+                        <h3>💎 머니 상품</h3>
+                        <div class="shop-items" id="moneyShop">
+                            <!-- 동적으로 생성됨 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단 섹션 -->
+        <div class="bottom-section">
+            <div class="bottom-item" id="inventoryBtn">
+                <h4>📦 인벤토리</h4>
+                <p>보관된 검 관리</p>
+            </div>
+            <div class="bottom-item" id="contactBtn">
+                <h4>💬 문의</h4>
+                <p>피드백 및 버그 제보</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달: 도감 -->
+    <div class="modal" id="dexModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 도감</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="dex-grid" id="dexGrid">
+                    <!-- 동적으로 생성됨 -->
+                </div>
+                <div class="completion-info" id="completionInfo"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달: 출석체크 -->
+    <div class="modal" id="checkInModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✓ 출석체크</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="checkin-container">
+                    <div class="reward-display">
+                        <div class="reward-amount">+10,000 G</div>
+                        <div class="reward-text">일일 보상</div>
+                    </div>
+                    <button class="btn btn-primary btn-large" id="checkInBtn2">오늘의 보상 받기</button>
+                    <div class="checkin-info" id="checkInInfo"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달: 인벤토리 -->
+    <div class="modal" id="inventoryModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>📦 인벤토리</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="inventory-grid" id="inventoryGrid">
+                    <p class="empty-message">보관된 검이 없습니다</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달: 랭킹 -->
+    <div class="modal" id="rankingModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>🏆 랭킹</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ranking-notice">
+                    <p>랭킹 기능은 DB 연동 후 추가 예정입니다.</p>
+                </div>
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>순위</th>
+                            <th>유저명</th>
+                            <th>최고 강화</th>
+                            <th>달성 시간</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>플레이어1</td>
+                            <td>15강</td>
+                            <td>2024-01-15</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>플레이어2</td>
+                            <td>13강</td>
+                            <td>2024-01-10</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>플레이어3</td>
+                            <td>11강</td>
+                            <td>2024-01-05</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달: GM -->
+    <div class="modal" id="gmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ GM 패널</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="gm-notice">
+                    <p>GM 기능은 DB 연동 후 추가 예정입니다.</p>
+                </div>
+                <form class="gm-form" id="gmForm">
+                    <div class="form-group">
+                        <label>유저 ID:</label>
+                        <input type="text" placeholder="사용자 ID 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>계정 상태:</label>
+                        <select>
+                            <option>활성</option>
+                            <option>정지</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>골드 변경:</label>
+                        <input type="number" placeholder="변경할 골드">
+                    </div>
+                    <div class="form-group">
+                        <label>머니 변경:</label>
+                        <input type="number" placeholder="변경할 머니">
+                    </div>
+                    <button type="button" class="btn btn-secondary" disabled>적용하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달: 문의 -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💬 문의하기</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label>제목:</label>
+                        <input type="text" placeholder="문의 제목 입력" required>
+                    </div>
+                    <div class="form-group">
+                        <label>카테고리:</label>
+                        <select required>
+                            <option value="">선택하세요</option>
+                            <option value="bug">버그 제보</option>
+                            <option value="feedback">피드백</option>
+                            <option value="other">기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>내용:</label>
+                        <textarea placeholder="문의 내용 입력" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">제출하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 컨테이너 -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- 확인 대화상자 -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="confirmTitle">확인</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="confirmCancel">취소</button>
+                <button class="btn btn-primary" id="confirmOk">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
