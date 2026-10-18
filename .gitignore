@@ -1,0 +1,68 @@
+# 환경 변수 및 설정 파일
+.env
+.env.local
+.env.*.local
+config.local.js
+
+# IDE 및 에디터
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# Node.js (향후 백엔드 추가 시)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# 빌드 및 배포
+dist/
+build/
+*.min.js
+*.min.css
+
+# 임시 파일
+*.tmp
+*.temp
+*.log
+*.bak
+
+# OS 파일
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+
+# 로컬 테스트 데이터
+test-data/
+mock-data/
+
+# 백업 파일
+*.backup
+*.bkp
+
+# Supabase 관련 (향후 DB 연동 시)
+.supabase/
+supabase-secret.json
+
+# API 키 및 크리덴셜
+credentials.json
+secrets.json
+api-keys.json
+
+# 기타 민감한 파일
+*.pem
+*.key
+*.keystore
+*.p12
+
+# 에이전트 작업 파일 (로컬 개발용)
+.agents/tasks/**/*.tmp
